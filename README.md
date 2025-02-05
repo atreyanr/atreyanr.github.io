@@ -1,6 +1,6 @@
 # Atreyan Raman's Portfolio
 
-Welcome to Atreyan's portfolio page! Here you will find information about my projects, skills, and experience.
+Welcome to Atreyan's portfolio page! Here you will find information about his projects, skills, and experience.
 
 ## About Me
 
