@@ -1,81 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            overflow-x: hidden;
-            max-width: 100%;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minimal Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <div class="logo">MyPortfolio</div>
-        <ul class="nav-links">
-            <li><a href="#work">Work</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <button id="dark-mode-toggle">🌙</button>
-    </nav>
-    <header>
-        <h1>Hi, I'm <span>Atreyan</span></h1>
-        <p>Data Scientist</p>
-        <a href="#work" class="btn">View My Work</a>
-    </header>
-    <section id="work">
-        <h2>My Work</h2>
-        <div class="projects">
-            <div class="project">
-                <img src="project1.webp" alt="Project 1">
-                <h3>Project One</h3>
-            </div>
-            <div class="project">
-                <img src="project2.webp" alt="Project 2">
-                <h3>Project Two</h3>
-            </div>
-            <div class="project">
-                <img src="project3.webp" alt="Project 3">
-                <h3>Project Three</h3>
-            </div>
-        </div>
-    </section>
-    <section id="about">
-        <h2>About Me</h2>
-        <p>A short, engaging bio about yourself. Highlight your skills and expertise.</p>
-    </section>
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Let's work together! Send me a message.</p>
-    <!-- Formspree form starts here -->
+  <nav>
+    <div class="logo">MyPortfolio</div>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button id="dark-mode-toggle">🌙</button>
+  </nav>
+
+  <header>
+    <!-- Typing effect element -->
+    <h1 id="intro"></h1>
+    <p>Data Scientist</p>
+    <a href="#work" class="btn">View My Work</a>
+  </header>
+
+  <section id="work">
+    <h2>My Work</h2>
+    <div class="projects">
+      <div class="project">
+        <img src="project1.webp" alt="Project 1" />
+        <h3>Project One</h3>
+      </div>
+      <div class="project">
+        <img src="project2.webp" alt="Project 2" />
+        <h3>Project Two</h3>
+      </div>
+      <div class="project">
+        <img src="project3.webp" alt="Project 3" />
+        <h3>Project Three</h3>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>A short, engaging bio about yourself. Highlight your skills and expertise.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Let's work together! Send me a message.</p>
+    <!-- Formspree form -->
     <form action="https://formspree.io/f/xnnjznbz" method="POST">
-        <label>
-            Your email:
-            <input type="email" name="email" placeholder="Your Email" required>
-        </label>
-        <label>
-            Your message:
-            <textarea name="message" placeholder="Your Message" required></textarea>
-        </label>
-        <!-- Add any additional fields as needed -->
-        <button type="submit">Send</button>
+      <label>
+        Your email:
+        <input type="email" name="email" placeholder="Your Email" required />
+      </label>
+      <label>
+        Your message:
+        <textarea name="message" placeholder="Your Message" required></textarea>
+      </label>
+      <button type="submit">Send</button>
     </form>
-    <!-- Formspree form ends here -->
-</section>
-    <footer>
-        <p>&copy; 2024 Atreyan Raman. All Rights Reserved.</p>
-    </footer>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Atreyan Raman. All Rights Reserved.</p>
+  </footer>
 </body>
 </html>
