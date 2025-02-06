@@ -59,13 +59,21 @@
     <section id="contact">
         <h2>Contact</h2>
         <p>Let's work together! Send me a message.</p>
-        <form>
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Your Email" required>
-            <textarea placeholder="Your Message" required></textarea>
-            <button type="submit">Send</button>
-        </form>
-    </section>
+    <!-- Formspree form starts here -->
+    <form action="https://formspree.io/f/xnnjznbz" method="POST">
+        <label>
+            Your email:
+            <input type="email" name="email" placeholder="Your Email" required>
+        </label>
+        <label>
+            Your message:
+            <textarea name="message" placeholder="Your Message" required></textarea>
+        </label>
+        <!-- Add any additional fields as needed -->
+        <button type="submit">Send</button>
+    </form>
+    <!-- Formspree form ends here -->
+</section>
     <footer>
         <p>&copy; 2024 Atreyan Raman. All Rights Reserved.</p>
     </footer>
