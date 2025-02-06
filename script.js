@@ -33,9 +33,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+<<<<<<< HEAD
+// // Form submission alert
+=======
 // Form submission alert
+>>>>>>> 20455a8ca43fce368d565c841da97734a50e01e1
 // document.querySelector('form').addEventListener('submit', function(e) {
 //     e.preventDefault();
 //     alert('Thank you for reaching out! I will get back to you soon.');
 //     this.reset();
+<<<<<<< HEAD
 // });
+=======
+// });
+>>>>>>> 20455a8ca43fce368d565c841da97734a50e01e1
