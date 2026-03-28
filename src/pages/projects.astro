@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ui/ProjectCard.astro';
+import { content } from '../config/content';
+
+const allTags = [...new Set(content.projects.flatMap(p => [...p.tags]))].sort();
+---
+
+<Layout title="Projects">
+  <div class="min-h-screen pt-32 pb-24 max-w-6xl mx-auto px-6">
+    <div class="mb-12">
+      <p class="text-accent font-mono text-sm uppercase tracking-widest mb-3 reveal">Work</p>
+      <h1 class="text-4xl md:text-5xl font-bold text-text-primary reveal">Projects</h1>
+    </div>
+
+    <div id="tag-filters" class="flex flex-wrap gap-2 mb-10 reveal">
+      <button class="filter-btn active-filter tag" data-tag="all">All</button>
+      {allTags.map(tag => (
+        <button class="filter-btn tag" data-tag={tag}>{tag}</button>
+      ))}
+    </div>
+
+    <div id="project-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {content.projects.map(project => (
+        <div
+          class:list={['project-item', project.featured ? 'md:col-span-2' : '']}
+          data-tags={JSON.stringify([...project.tags])}
+        >
+          <ProjectCard {...project} />
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .active-filter {
+    background-color: theme('colors.accent') !important;
+    color: white !important;
+    border-color: theme('colors.accent') !important;
+  }
+</style>
+
+<script>
+const gsap = (window as any).__gsap;
+const ScrollTrigger = (window as any).__ScrollTrigger;
+
+if (gsap && ScrollTrigger) {
+  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el: HTMLElement) => {
+    gsap.from(el, {
+      y: 24,
+      opacity: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 80%' },
+    });
+  });
+
+  gsap.from('.project-item', {
+    y: 32,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.1,
+    ease: 'power2.out',
+    delay: 0.2,
+  });
+}
+
+// Tag filtering
+const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+const items = document.querySelectorAll<HTMLElement>('.project-item');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tag = btn.getAttribute('data-tag');
+    filterBtns.forEach(b => b.classList.remove('active-filter'));
+    btn.classList.add('active-filter');
+    items.forEach(item => {
+      const tags: string[] = JSON.parse(item.getAttribute('data-tags') ?? '[]');
+      item.style.display = (tag === 'all' || tags.includes(tag ?? '')) ? '' : 'none';
+    });
+  });
+});
+</script>

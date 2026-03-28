@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SkillGraph from '../components/ui/SkillGraph.tsx';
+import { content } from '../config/content';
+
+// Convert readonly arrays/objects to mutable for React prop passing
+const skills = content.skills.map(s => ({
+  name: s.name,
+  category: s.category,
+  proficiency: s.proficiency,
+  tools: [...s.tools],
+}));
+const categoryColors = { ...content.skillCategories };
+---
+
+<Layout title="Skills">
+  <div class="min-h-screen pt-32 pb-24 max-w-6xl mx-auto px-6">
+    <div class="mb-12">
+      <p class="text-accent font-mono text-sm uppercase tracking-widest mb-3 reveal">Capabilities</p>
+      <h1 class="text-4xl md:text-5xl font-bold text-text-primary reveal">Skills</h1>
+      <p class="text-text-muted mt-4 text-lg reveal">
+        Hover any node to see tools and proficiency. Clusters group related skills.
+      </p>
+    </div>
+
+    <div class="bg-surface rounded-2xl border border-border p-6 reveal">
+      <SkillGraph
+        client:only="react"
+        skills={skills}
+        categoryColors={categoryColors}
+      />
+    </div>
+
+    <div class="flex flex-wrap gap-6 mt-6 reveal">
+      {Object.entries(content.skillCategories).map(([cat, color]) => (
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full inline-block" style={`background:${color}`}></span>
+          <span class="text-text-muted text-sm">{cat}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<script>
+const gsap = (window as any).__gsap;
+if (gsap) {
+  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el: HTMLElement) => {
+    gsap.from(el, {
+      y: 24,
+      opacity: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 80%' },
+    });
+  });
+}
+</script>

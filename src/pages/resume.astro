@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { content } from '../config/content';
+---
+
+<Layout title="Resume">
+  <div class="min-h-screen pt-32 pb-24 max-w-5xl mx-auto px-6">
+    <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+      <div>
+        <p class="text-accent font-mono text-sm uppercase tracking-widest mb-2 reveal">CV</p>
+        <h1 class="text-4xl font-bold text-text-primary reveal">Resume</h1>
+      </div>
+      <a
+        href={content.personal.resumePdf}
+        download
+        class="btn-primary reveal"
+      >
+        Download PDF
+      </a>
+    </div>
+
+    <div class="rounded-xl overflow-hidden border border-border reveal">
+      <embed
+        src={content.personal.resumePdf}
+        type="application/pdf"
+        class="w-full"
+        style="height: 85vh; min-height: 600px;"
+      />
+    </div>
+
+    <p class="text-text-subtle text-sm mt-4 text-center md:hidden">
+      PDF viewer not available on mobile?
+      <a href={content.personal.resumePdf} target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">
+        Open in new tab
+      </a>
+    </p>
+  </div>
+</Layout>
+
+<script>
+const gsap = (window as any).__gsap;
+if (gsap) {
+  gsap.from('.reveal', {
+    y: 24,
+    opacity: 0,
+    duration: 0.6,
+    ease: 'power2.out',
+    stagger: 0.1,
+    delay: 0.2,
+  });
+}
+</script>
