@@ -1,0 +1,70 @@
+---
+import { content } from '../../config/content';
+
+const { bio } = content.personal;
+const { stats } = content;
+---
+
+<section id="about" class="py-32 max-w-6xl mx-auto px-6">
+  <div class="grid md:grid-cols-2 gap-16 items-center">
+    <div>
+      <p class="text-accent font-mono text-sm uppercase tracking-widest mb-4 reveal">About</p>
+      <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-6 reveal">
+        Building ML systems that<br/>
+        <span class="text-accent">actually ship.</span>
+      </h2>
+      <p class="text-text-muted leading-relaxed text-lg reveal">{bio}</p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-6">
+      {stats.map((stat) => (
+        <div class="text-center p-6 rounded-xl bg-surface border border-border reveal">
+          <div class="text-4xl font-extrabold text-accent mb-1">
+            <span class="stat-value" data-target={stat.value}>0</span>{stat.suffix}
+          </div>
+          <div class="text-text-muted text-sm mt-1">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+const gsap = (window as any).__gsap;
+const ScrollTrigger = (window as any).__ScrollTrigger;
+
+if (gsap && ScrollTrigger) {
+  // Reveal elements in the about section
+  gsap.utils.toArray<HTMLElement>('#about .reveal').forEach((el: HTMLElement) => {
+    gsap.from(el, {
+      y: 24,
+      opacity: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 80%',
+      },
+    });
+  });
+
+  // Animated stat counters
+  document.querySelectorAll<HTMLElement>('.stat-value').forEach((el) => {
+    const target = parseInt(el.getAttribute('data-target') ?? '0', 10);
+    const obj = { val: 0 };
+    gsap.to(obj, {
+      val: target,
+      duration: 2,
+      ease: 'power2.out',
+      snap: { val: 1 },
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 80%',
+      },
+      onUpdate() {
+        el.textContent = String(Math.round(obj.val));
+      },
+    });
+  });
+}
+</script>

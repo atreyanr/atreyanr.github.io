@@ -1,0 +1,213 @@
+---
+import { content } from '../../config/content';
+import { theme } from '../../config/theme';
+
+const { name, titles, resumePdf } = content.personal;
+const particleConfig = theme.particles;
+const accentColor = theme.colors.accent;
+const animConfig = theme.animation;
+---
+
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+  <canvas id="hero-canvas" class="absolute inset-0 w-full h-full" style="z-index:0"></canvas>
+
+  <div class="absolute inset-0 bg-gradient-to-b from-background/10 via-background/30 to-background" style="z-index:1"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+    <p class="text-accent font-mono text-sm uppercase tracking-widest mb-4 reveal">
+      Hello, I&apos;m
+    </p>
+
+    <h1 class="text-5xl md:text-7xl font-extrabold text-text-primary mb-4 leading-tight reveal">
+      {name}
+    </h1>
+
+    <div class="h-12 mb-8 flex items-center justify-center reveal">
+      <span class="text-2xl md:text-3xl text-text-muted font-light">
+        <span id="typewriter" class="text-accent font-medium">{titles[0]}</span>
+      </span>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center reveal">
+      <a href="/projects" class="btn-primary">View Projects</a>
+      <a href={resumePdf} target="_blank" rel="noopener noreferrer" class="btn-secondary">Resume</a>
+    </div>
+  </div>
+
+  <div id="scroll-indicator" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-subtle">
+    <span class="text-xs uppercase tracking-widest font-mono">Scroll</span>
+    <div class="w-px h-12 bg-gradient-to-b from-text-subtle to-transparent animate-pulse"></div>
+  </div>
+</section>
+
+<script>
+import * as THREE from 'three';
+
+const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
+if (!canvas) throw new Error('hero-canvas not found');
+
+const scene    = new THREE.Scene();
+const camera   = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+camera.position.z = 300;
+
+const COUNT = 80;
+const SPEED = 0.3;
+const CONNECTION_DIST = 120;
+const MOUSE_INFLUENCE = 150;
+const ACCENT_COLOR = '#FF6B35';
+
+const positions = new Float32Array(COUNT * 3);
+const velocities: { x: number; y: number }[] = [];
+
+for (let i = 0; i < COUNT; i++) {
+  positions[i * 3]     = (Math.random() - 0.5) * window.innerWidth;
+  positions[i * 3 + 1] = (Math.random() - 0.5) * window.innerHeight;
+  positions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+  velocities.push({
+    x: (Math.random() - 0.5) * SPEED,
+    y: (Math.random() - 0.5) * SPEED,
+  });
+}
+
+const pointsGeometry = new THREE.BufferGeometry();
+pointsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const pointsMaterial = new THREE.PointsMaterial({
+  size: 2,
+  color: ACCENT_COLOR,
+  transparent: true,
+  opacity: 0.6,
+});
+const points = new THREE.Points(pointsGeometry, pointsMaterial);
+scene.add(points);
+
+const lineMaterial = new THREE.LineBasicMaterial({
+  color: ACCENT_COLOR,
+  transparent: true,
+  opacity: 0.08,
+});
+let linesMesh: THREE.LineSegments | null = null;
+
+function buildLines(): void {
+  const linePositions: number[] = [];
+  for (let i = 0; i < COUNT; i++) {
+    for (let j = i + 1; j < COUNT; j++) {
+      const dx = positions[i * 3]     - positions[j * 3];
+      const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+      if (Math.sqrt(dx * dx + dy * dy) < CONNECTION_DIST) {
+        linePositions.push(
+          positions[i*3], positions[i*3+1], positions[i*3+2],
+          positions[j*3], positions[j*3+1], positions[j*3+2],
+        );
+      }
+    }
+  }
+  if (linesMesh) scene.remove(linesMesh);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+  linesMesh = new THREE.LineSegments(geo, lineMaterial);
+  scene.add(linesMesh);
+}
+
+let mouseX = 0;
+let mouseY = 0;
+window.addEventListener('mousemove', (e: MouseEvent) => {
+  mouseX =  (e.clientX - window.innerWidth  / 2);
+  mouseY = -(e.clientY - window.innerHeight / 2);
+});
+
+let frameCount = 0;
+function animate(): void {
+  requestAnimationFrame(animate);
+  frameCount++;
+
+  const hw = window.innerWidth  / 2;
+  const hh = window.innerHeight / 2;
+
+  for (let i = 0; i < COUNT; i++) {
+    positions[i * 3]     += velocities[i].x;
+    positions[i * 3 + 1] += velocities[i].y;
+
+    const dx = positions[i * 3]     - mouseX;
+    const dy = positions[i * 3 + 1] - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < MOUSE_INFLUENCE && dist > 0) {
+      const force = (MOUSE_INFLUENCE - dist) / MOUSE_INFLUENCE;
+      positions[i * 3]     += (dx / dist) * force * 2;
+      positions[i * 3 + 1] += (dy / dist) * force * 2;
+    }
+
+    if (positions[i * 3]     >  hw) positions[i * 3]     = -hw;
+    if (positions[i * 3]     < -hw) positions[i * 3]     =  hw;
+    if (positions[i * 3 + 1] >  hh) positions[i * 3 + 1] = -hh;
+    if (positions[i * 3 + 1] < -hh) positions[i * 3 + 1] =  hh;
+  }
+
+  pointsGeometry.attributes.position.needsUpdate = true;
+  if (frameCount % 3 === 0) buildLines();
+  renderer.render(scene, camera);
+}
+buildLines();
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Typewriter
+const twEl = document.getElementById('typewriter');
+const titles: string[] = ['Data Scientist', 'ML Engineer', 'Optimization Specialist'];
+if (twEl) {
+  let titleIndex = 0;
+  let charIndex  = 0;
+  let deleting   = false;
+
+  function type(): void {
+    const current = titles[titleIndex];
+    if (!deleting) {
+      twEl!.textContent = current.slice(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === current.length) {
+        deleting = true;
+        setTimeout(type, 1800);
+        return;
+      }
+    } else {
+      twEl!.textContent = current.slice(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) {
+        deleting = false;
+        titleIndex = (titleIndex + 1) % titles.length;
+      }
+    }
+    setTimeout(type, deleting ? 50 : 90);
+  }
+  setTimeout(type, 800);
+}
+
+// Scroll indicator fade
+const indicator = document.getElementById('scroll-indicator');
+if (indicator) {
+  window.addEventListener('scroll', () => {
+    indicator.style.opacity = String(Math.max(0, 1 - window.scrollY / 200));
+  }, { passive: true });
+}
+
+// GSAP entrance animations
+const gsap = (window as any).__gsap;
+if (gsap) {
+  gsap.from('#hero .reveal', {
+    y: 30,
+    opacity: 0,
+    duration: 0.6,
+    stagger: 0.1,
+    ease: 'power2.out',
+    delay: 0.3,
+  });
+}
+</script>

@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import About from '../components/sections/About.astro';
+import { content } from '../config/content';
+---
+
+<Layout title="Portfolio" description={content.personal.bio}>
+  <Hero />
+  <About />
+</Layout>
