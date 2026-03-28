@@ -48,8 +48,7 @@
   }
 
   .reveal {
-    opacity: 0;
-    transform: translateY(24px);
+    will-change: opacity, transform;
   }
 
   .tag {

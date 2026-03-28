@@ -30,41 +30,40 @@ const { stats } = content;
 </section>
 
 <script>
-const gsap = (window as any).__gsap;
-const ScrollTrigger = (window as any).__ScrollTrigger;
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 
-if (gsap && ScrollTrigger) {
-  // Reveal elements in the about section
-  gsap.utils.toArray<HTMLElement>('#about .reveal').forEach((el: HTMLElement) => {
-    gsap.from(el, {
-      y: 24,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 80%',
-      },
-    });
+// Reveal elements in the about section
+gsap.utils.toArray<HTMLElement>('#about .reveal').forEach((el: HTMLElement) => {
+  gsap.from(el, {
+    y: 24,
+    opacity: 0,
+    duration: 0.6,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 80%',
+    },
   });
+});
 
-  // Animated stat counters
-  document.querySelectorAll<HTMLElement>('.stat-value').forEach((el) => {
-    const target = parseInt(el.getAttribute('data-target') ?? '0', 10);
-    const obj = { val: 0 };
-    gsap.to(obj, {
-      val: target,
-      duration: 2,
-      ease: 'power2.out',
-      snap: { val: 1 },
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 80%',
-      },
-      onUpdate() {
-        el.textContent = String(Math.round(obj.val));
-      },
-    });
+// Animated stat counters
+document.querySelectorAll<HTMLElement>('.stat-value').forEach((el) => {
+  const target = parseInt(el.getAttribute('data-target') ?? '0', 10);
+  const obj = { val: 0 };
+  gsap.to(obj, {
+    val: target,
+    duration: 2,
+    ease: 'power2.out',
+    snap: { val: 1 },
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 80%',
+    },
+    onUpdate() {
+      el.textContent = String(Math.round(obj.val));
+    },
   });
-}
+});
 </script>

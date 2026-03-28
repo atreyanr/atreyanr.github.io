@@ -15,53 +15,52 @@ import Timeline from '../components/ui/Timeline.astro';
 </Layout>
 
 <script>
-const gsap = (window as any).__gsap;
-const ScrollTrigger = (window as any).__ScrollTrigger;
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 
-if (gsap && ScrollTrigger) {
-  // Reveal header elements
-  gsap.utils.toArray<HTMLElement>('.reveal').forEach((el: HTMLElement) => {
-    gsap.from(el, {
-      y: 24,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 80%' },
-    });
+// Reveal header elements
+gsap.utils.toArray<HTMLElement>('.reveal').forEach((el: HTMLElement) => {
+  gsap.from(el, {
+    y: 24,
+    opacity: 0,
+    duration: 0.6,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 80%' },
   });
+});
 
-  // Animate the timeline progress bar as you scroll
-  const progressBar = document.getElementById('timeline-progress');
-  const container   = document.querySelector('.timeline-container');
+// Animate the timeline progress bar as you scroll
+const progressBar = document.getElementById('timeline-progress');
+const container   = document.querySelector('.timeline-container');
 
-  if (progressBar && container) {
-    gsap.to(progressBar, {
-      height: '100%',
-      ease: 'none',
-      scrollTrigger: {
-        trigger: container,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        scrub: 1,
-      },
-    });
-  }
-
-  // Slide in timeline entry cards from alternating sides
-  gsap.utils.toArray<HTMLElement>('.timeline-entry').forEach((entry: HTMLElement) => {
-    const index = parseInt(entry.getAttribute('data-index') ?? '0', 10);
-    const card  = entry.querySelector<HTMLElement>('.p-6');
-    if (!card) return;
-    gsap.from(card, {
-      x: window.innerWidth >= 768 ? (index % 2 === 0 ? -40 : 40) : -40,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: entry,
-        start: 'top 80%',
-      },
-    });
+if (progressBar && container) {
+  gsap.to(progressBar, {
+    height: '100%',
+    ease: 'none',
+    scrollTrigger: {
+      trigger: container,
+      start: 'top 80%',
+      end: 'bottom 20%',
+      scrub: 1,
+    },
   });
 }
+
+// Slide in timeline entry cards from alternating sides
+gsap.utils.toArray<HTMLElement>('.timeline-entry').forEach((entry: HTMLElement) => {
+  const index = parseInt(entry.getAttribute('data-index') ?? '0', 10);
+  const card  = entry.querySelector<HTMLElement>('.p-6');
+  if (!card) return;
+  gsap.from(card, {
+    x: window.innerWidth >= 768 ? (index % 2 === 0 ? -40 : 40) : -40,
+    opacity: 0,
+    duration: 0.7,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: entry,
+      start: 'top 80%',
+    },
+  });
+});
 </script>

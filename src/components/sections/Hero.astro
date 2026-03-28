@@ -199,15 +199,13 @@ if (indicator) {
 }
 
 // GSAP entrance animations
-const gsap = (window as any).__gsap;
-if (gsap) {
-  gsap.from('#hero .reveal', {
-    y: 30,
-    opacity: 0,
-    duration: 0.6,
-    stagger: 0.1,
-    ease: 'power2.out',
-    delay: 0.3,
-  });
-}
+import { gsap } from 'gsap';
+gsap.from('#hero .reveal', {
+  y: 30,
+  opacity: 0,
+  duration: 0.6,
+  stagger: 0.1,
+  ease: 'power2.out',
+  delay: 0.3,
+});
 </script>

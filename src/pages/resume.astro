@@ -38,15 +38,13 @@ import { content } from '../config/content';
 </Layout>
 
 <script>
-const gsap = (window as any).__gsap;
-if (gsap) {
-  gsap.from('.reveal', {
-    y: 24,
-    opacity: 0,
-    duration: 0.6,
-    ease: 'power2.out',
-    stagger: 0.1,
-    delay: 0.2,
-  });
-}
+import { gsap } from 'gsap';
+gsap.from('.reveal', {
+  y: 24,
+  opacity: 0,
+  duration: 0.6,
+  ease: 'power2.out',
+  stagger: 0.1,
+  delay: 0.2,
+});
 </script>
