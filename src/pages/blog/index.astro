@@ -25,7 +25,7 @@ const posts = (await getCollection('blog', entry => !entry.data.draft))
               date={post.data.date}
               excerpt={post.data.excerpt}
               tags={post.data.tags}
-              slug={post.slug}
+              slug={post.id}
             />
           </div>
         ))}
