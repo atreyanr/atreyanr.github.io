@@ -1,9 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ui/ProjectCard.astro';
-import { content } from '../config/content';
+import { getCollection } from 'astro:content';
 
-const allTags = [...new Set(content.projects.flatMap(p => [...p.tags]))].sort();
+const rawProjects = await getCollection('projects');
+const projects = rawProjects.sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
+const allTags = [...new Set(projects.flatMap(p => [...p.data.tags]))].sort();
 ---
 
 <Layout title="Projects">
@@ -21,12 +25,12 @@ const allTags = [...new Set(content.projects.flatMap(p => [...p.tags]))].sort();
     </div>
 
     <div id="project-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {content.projects.map(project => (
+      {projects.map(project => (
         <div
-          class:list={['project-item', project.featured ? 'md:col-span-2' : '']}
-          data-tags={JSON.stringify([...project.tags])}
+          class:list={['project-item', project.data.featured ? 'md:col-span-2' : '']}
+          data-tags={JSON.stringify([...project.data.tags])}
         >
-          <ProjectCard {...project} />
+          <ProjectCard {...project.data} />
         </div>
       ))}
     </div>

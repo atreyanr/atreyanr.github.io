@@ -1,8 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { content } from '../config/content';
+import { getCollection } from 'astro:content';
 
-const myName = content.personal.name;
+const myName = 'Atreyan Raman';
+
+const rawPubs = await getCollection('publications');
+const publications = rawPubs.sort(
+  (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+);
 ---
 
 <Layout title="Publications">
@@ -13,28 +18,28 @@ const myName = content.personal.name;
     </div>
 
     <div class="flex flex-col gap-6">
-      {content.publications.map((pub) => (
+      {publications.map((pub) => (
         <div class="pub-item card p-6 rounded-xl border border-border hover:border-accent/40 transition-colors">
           <div class="flex items-start justify-between gap-4 flex-wrap mb-3">
-            <span class="text-xs font-mono text-accent uppercase tracking-widest">{pub.type} &mdash; {pub.venue}</span>
-            <span class="text-xs text-text-muted">{pub.date} &middot; {pub.location}</span>
+            <span class="text-xs font-mono text-accent uppercase tracking-widest">{pub.data.type} &mdash; {pub.data.venue}</span>
+            <span class="text-xs text-text-muted">{pub.data.date} &middot; {pub.data.location}</span>
           </div>
 
-          <h2 class="text-lg font-semibold text-text-primary mb-3 leading-snug">{pub.title}</h2>
+          <h2 class="text-lg font-semibold text-text-primary mb-3 leading-snug">{pub.data.title}</h2>
 
           <p class="text-sm text-text-muted mb-4">
-            {pub.authors.map((author, i) => (
+            {pub.data.authors.map((author, i) => (
               <span>
                 {author === myName
                   ? <strong class="text-text-primary">{author}</strong>
                   : author}
-                {i < pub.authors.length - 1 ? ', ' : ''}
+                {i < pub.data.authors.length - 1 ? ', ' : ''}
               </span>
             ))}
           </p>
 
           <a
-            href={pub.url}
+            href={pub.data.url}
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center gap-1.5 text-xs text-accent hover:text-accent/80 transition-colors font-mono"

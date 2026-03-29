@@ -40,6 +40,23 @@ const { Content } = await render(post);
     <div class="prose-dark">
       <Content />
     </div>
+
+    {post.data.references.length > 0 && (
+      <footer class="mt-16 pt-8 border-t border-border">
+        <h2 class="text-sm font-mono text-accent uppercase tracking-widest mb-4">References</h2>
+        <ol class="flex flex-col gap-3">
+          {post.data.references.map(ref => (
+            <li id={`ref-${ref.label}`} class="flex gap-3 text-sm text-text-muted">
+              <span class="text-accent font-mono shrink-0">[{ref.label}]</span>
+              {ref.url
+                ? <a href={ref.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">{ref.text}</a>
+                : <span>{ref.text}</span>
+              }
+            </li>
+          ))}
+        </ol>
+      </footer>
+    )}
   </article>
 </Layout>
 

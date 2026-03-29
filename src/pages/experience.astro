@@ -1,6 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Timeline from '../components/ui/Timeline.astro';
+import { getCollection } from 'astro:content';
+
+const rawEntries = await getCollection('experience');
+const entries = rawEntries
+  .sort((a, b) => a.data.order - b.data.order)
+  .map(e => e.data);
 ---
 
 <Layout title="Experience">
@@ -10,7 +16,7 @@ import Timeline from '../components/ui/Timeline.astro';
       <h1 class="text-4xl md:text-5xl font-bold text-text-primary reveal">Experience</h1>
     </div>
 
-    <Timeline />
+    <Timeline entries={entries} />
   </div>
 </Layout>
 
