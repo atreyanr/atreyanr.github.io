@@ -54,6 +54,27 @@ export const content = {
     },
   ],
 
+  publications: [
+    {
+      title: 'Impact of COVID-19 Pandemic on Renewable Energy Projects in India',
+      authors: ['Gohar Azeem', 'Cecilia Martinez Leon', 'Abbas Keramati', 'Abhi Ram Condoor', 'Atreyan Raman', 'Param Himanshubhai Chavda', 'Ayushi Porwal', 'Venkata Naga Dinakar Inavolu'],
+      venue: 'IISE Annual Conference and Expo',
+      location: 'New Orleans, LA',
+      date: 'May 2023',
+      type: 'Oral Presentation',
+      url: 'https://iise.confex.com/iise/2023/meetingapp.cgi/Paper/3500',
+    },
+    {
+      title: 'How Global Supply Chains of Renewable Energy were impacted by COVID-19 Pandemic (A Case of India)',
+      authors: ['Gohar Azeem', 'Abhi Ram Condoor', 'Atreyan Raman', 'Param Himanshubhai Chavda', 'Ayushi Porwal', 'Venkata Naga Dinakar Inavolu'],
+      venue: 'IISE Annual Conference and Expo',
+      location: 'New Orleans, LA',
+      date: 'May 2023',
+      type: 'Oral Presentation',
+      url: 'https://iise.confex.com/iise/2023/meetingapp.cgi/Paper/3547',
+    },
+  ],
+
   experience: [
     {
       company: 'Santech',

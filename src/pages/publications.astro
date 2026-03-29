@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { content } from '../config/content';
+
+const myName = content.personal.name;
+---
+
+<Layout title="Publications">
+  <div class="min-h-screen pt-32 pb-24 max-w-4xl mx-auto px-6">
+    <div class="mb-12">
+      <p class="text-accent font-mono text-sm uppercase tracking-widest mb-3 reveal">Research</p>
+      <h1 class="text-4xl md:text-5xl font-bold text-text-primary reveal">Publications</h1>
+    </div>
+
+    <div class="flex flex-col gap-6">
+      {content.publications.map((pub) => (
+        <div class="pub-item card p-6 rounded-xl border border-border hover:border-accent/40 transition-colors">
+          <div class="flex items-start justify-between gap-4 flex-wrap mb-3">
+            <span class="text-xs font-mono text-accent uppercase tracking-widest">{pub.type} &mdash; {pub.venue}</span>
+            <span class="text-xs text-text-muted">{pub.date} &middot; {pub.location}</span>
+          </div>
+
+          <h2 class="text-lg font-semibold text-text-primary mb-3 leading-snug">{pub.title}</h2>
+
+          <p class="text-sm text-text-muted mb-4">
+            {pub.authors.map((author, i) => (
+              <span>
+                {author === myName
+                  ? <strong class="text-text-primary">{author}</strong>
+                  : author}
+                {i < pub.authors.length - 1 ? ', ' : ''}
+              </span>
+            ))}
+          </p>
+
+          <a
+            href={pub.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-xs text-accent hover:text-accent/80 transition-colors font-mono"
+          >
+            View Paper
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<script>
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.utils.toArray<HTMLElement>('.reveal').forEach((el: HTMLElement) => {
+  gsap.from(el, {
+    y: 24,
+    opacity: 0,
+    duration: 0.6,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: el, start: 'top 80%' },
+  });
+});
+
+gsap.from('.pub-item', {
+  y: 32,
+  opacity: 0,
+  duration: 0.6,
+  stagger: 0.12,
+  ease: 'power2.out',
+  delay: 0.2,
+});
+</script>
