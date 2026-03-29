@@ -45,12 +45,20 @@ export const content = {
 
   projects: [
     {
-      title: 'Project Title',
-      description: 'Short description of the project. What problem did it solve? What impact did it have?',
-      tags: ['Python', 'CatBoost', 'SHAP'],
+      title: 'Airline Delay Prediction',
+      description: 'Built decision tree and logistic regression models to predict airline delays with 93.5% accuracy. Applied PCA to improve logistic regression to 91.7% and published insights via a Power BI dashboard.',
+      tags: ['Python', 'scikit-learn', 'PCA', 'Power BI'],
       link: '#',
       image: null as string | null,
       featured: true,
+    },
+    {
+      title: 'Site Selection using Set Covering Method',
+      description: 'Led team optimizing facility layout and site selection for micro composting centers in Chennai, India. Analyzed 10 zones (200 wards) across 2.1M households. Applied a set-covering LP model in Excel Solver to identify 42 optimal sites covering all demand zones — minimizing costs to $11.1M while meeting 5 MT/day processing requirements per facility.',
+      tags: ['Linear Programming', 'Excel Solver', 'Facilities Design', 'Operations Research'],
+      link: '#',
+      image: null as string | null,
+      featured: false,
     },
   ],
 
